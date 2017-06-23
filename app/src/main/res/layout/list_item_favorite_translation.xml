@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,33 +7,28 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/anchor_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingStart="8dp"
-        android:paddingTop="16dp"
-        android:paddingRight="8dp"
-        android:paddingEnd="8dp"
-        android:orientation="horizontal">
+        android:layout_toLeftOf="@+id/remove_translation_image_button"
+        android:layout_toStartOf="@+id/remove_translation_image_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/text_to_translate_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
             android:textSize="16sp"
             android:textStyle="bold"
             tools:text="Стол" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:text="->" />
 
         <TextView
             android:id="@+id/text_translated_text_view"
@@ -44,10 +39,24 @@
 
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/remove_translation_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_cancel_black_36dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
+        android:layout_below="@+id/anchor_1"
         android:layout_marginTop="16dp"
         android:background="@color/colorAccent" />
 
-</LinearLayout>
+</RelativeLayout>

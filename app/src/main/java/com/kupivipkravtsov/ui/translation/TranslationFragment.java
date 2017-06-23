@@ -8,11 +8,18 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.kupivipkravtsov.R;
+import com.kupivipkravtsov.domain.entity.Language;
 import com.kupivipkravtsov.ui.ViewModelFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +33,8 @@ public final class TranslationFragment extends Fragment {
 
     @BindView(R.id.text_to_translate_edit_text)
     EditText textToTranslateEditText;
+    @BindView(R.id.supported_languages_spinner)
+    Spinner supportedLanguagesSpinner;
     @BindView(R.id.text_translated_text_view)
     TextView textTranslatedTextView;
 
@@ -76,6 +85,7 @@ public final class TranslationFragment extends Fragment {
     private void bindViewModel() {
         viewModelSubscription = new CompositeDisposable();
         viewModelSubscription.add(viewModel.getTextTranslated().subscribe(this::displayTextTranslated));
+        viewModelSubscription.add(viewModel.getSupportedLanguages().subscribe(this::displaySupportedLanguages));
     }
 
     private void unbindViewModel() {
@@ -107,5 +117,25 @@ public final class TranslationFragment extends Fragment {
 
     private void displayTextTranslated(String textTranslated) {
         textTranslatedTextView.setText(textTranslated);
+    }
+
+    private void displaySupportedLanguages(List<Language> supportedLanguages) {
+        List<String> languageDescriptions = new ArrayList<>();
+        for (Language language : supportedLanguages) languageDescriptions.add(language.getDescription());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_supported_language, languageDescriptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        supportedLanguagesSpinner.setAdapter(adapter);
+
+        supportedLanguagesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                viewModel.onLanguageSelected(supportedLanguages.get(i).getCode());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 }

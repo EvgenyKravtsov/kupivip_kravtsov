@@ -1,8 +1,8 @@
 package com.kupivipkravtsov.domain.interactor;
 
 import com.kupivipkravtsov.domain.TranslationRepository;
+import com.kupivipkravtsov.domain.entity.Translation;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public final class TranslateInteractor {
@@ -17,7 +17,7 @@ public final class TranslateInteractor {
 
     ////
 
-    public Single<String> execute(String textToTranslate) {
-        return translationRepository.queryTranslation(textToTranslate);
+    public Single<String> execute(Translation translation) {
+        return translationRepository.queryTranslation(translation);
     }
 }

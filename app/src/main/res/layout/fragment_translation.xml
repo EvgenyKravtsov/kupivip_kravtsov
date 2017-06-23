@@ -27,11 +27,24 @@
         android:inputType="text"
         android:hint="Введите текст для перевода" />
 
+    <Spinner
+        android:id="@+id/supported_languages_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_to_translate_edit_text"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:spinnerMode="dropdown"
+        android:dropDownVerticalOffset="48dp" />
+
     <TextView
         android:id="@+id/text_translated_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_to_translate_edit_text"
+        android:layout_below="@+id/supported_languages_spinner"
         android:padding="8dp"
         android:gravity="center_horizontal"
         tools:text="Some translated text" />

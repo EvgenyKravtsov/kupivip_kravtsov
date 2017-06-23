@@ -1,17 +1,16 @@
 package com.kupivipkravtsov.domain.entity;
 
-public final class FavoriteTranslation {
+
+public final class Translation {
 
     private final String languageCode;
     private final String textToTranslate;
-    private final String textTranslated;
 
     ////
 
-    public FavoriteTranslation(String languageCode, String textToTranslate, String textTranslated) {
+    public Translation(String languageCode, String textToTranslate) {
         this.languageCode = languageCode;
         this.textToTranslate = textToTranslate;
-        this.textTranslated = textTranslated;
     }
 
     ////
@@ -22,9 +21,5 @@ public final class FavoriteTranslation {
 
     public String getTextToTranslate() {
         return textToTranslate;
-    }
-
-    public String getTextTranslated() {
-        return textTranslated;
     }
 }

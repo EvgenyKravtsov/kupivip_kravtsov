@@ -1,6 +1,5 @@
 package com.kupivipkravtsov.domain.interactor;
 
-import com.kupivipkravtsov.data.FavoriteTranslationStorage;
 import com.kupivipkravtsov.domain.TranslationRepository;
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
 
@@ -12,7 +11,7 @@ public final class GetFavoritesTranslationsInteractor {
 
     ////
 
-    public GetFavoritesTranslationsInteractor(TranslationRepository translationRepository) {
+    GetFavoritesTranslationsInteractor(TranslationRepository translationRepository) {
         this.translationRepository = translationRepository;
     }
 

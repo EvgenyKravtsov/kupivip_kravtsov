@@ -2,11 +2,12 @@ package com.kupivipkravtsov.data;
 
 import com.kupivipkravtsov.domain.TranslationRepository;
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
+import com.kupivipkravtsov.domain.entity.Translation;
 
-import io.reactivex.Completable;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
 public final class TranslationRepositoryMain implements TranslationRepository {
@@ -15,39 +16,51 @@ public final class TranslationRepositoryMain implements TranslationRepository {
 
     private final NetworkTranslationService networkTranslationService;
     private final NetworkTranslationCache networkTranslationCache;
-    private final FavoriteTranslationStorage favoriteTranslationStorage;
+    private final FavoriteTranslationsStorage favoriteTranslationsStorage;
 
     ////
 
     public TranslationRepositoryMain(NetworkTranslationService networkTranslationService,
                                      NetworkTranslationCache networkTranslationCache,
-                                     FavoriteTranslationStorage favoriteTranslationStorage) {
+                                     FavoriteTranslationsStorage favoriteTranslationsStorage) {
         this.networkTranslationService = networkTranslationService;
         this.networkTranslationCache = networkTranslationCache;
-        this.favoriteTranslationStorage = favoriteTranslationStorage;
+        this.favoriteTranslationsStorage = favoriteTranslationsStorage;
     }
 
     //// TRANSLATION REPOSITORY
 
     @Override
-    public Single<String> queryTranslation(String textToTranslate) {
+    public Single<String> queryTranslation(Translation translation) {
         return Observable.concat(
-                networkTranslationService.translate(textToTranslate),
-                networkTranslationCache.get(textToTranslate),
-                favoriteTranslationStorage.get(textToTranslate))
-                .first(textToTranslate)
+                networkTranslationService.translate(translation),
+                networkTranslationCache.get(translation),
+                favoriteTranslationsStorage.get(translation))
+                .first(translation.getTextToTranslate())
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
     public void addFavoriteTranslation(FavoriteTranslation favoriteTranslation) {
-        Single.just(true).doOnSuccess( value -> favoriteTranslationStorage.add(favoriteTranslation))
+        Single.just(true).doOnSuccess(value -> favoriteTranslationsStorage.add(favoriteTranslation))
                 .subscribeOn(Schedulers.newThread())
                 .subscribe();
     }
 
     @Override
     public Observable<FavoriteTranslation> queryFavoriteTranslations() {
-        return favoriteTranslationStorage.getFavoriteTranslations().subscribeOn(Schedulers.io());
+        return favoriteTranslationsStorage.getAll().subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public void removeFavoriteTranslation(FavoriteTranslation favoriteTranslation) {
+        Single.just(true).doOnSuccess( value -> favoriteTranslationsStorage.remove(favoriteTranslation))
+                .subscribeOn(Schedulers.newThread())
+                .subscribe();
+    }
+
+    @Override
+    public Observable<List<String>> querySupportedLanguages() {
+        return networkTranslationService.requestSupportedLanguages().subscribeOn(Schedulers.io());
     }
 }

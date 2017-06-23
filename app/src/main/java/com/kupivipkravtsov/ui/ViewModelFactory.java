@@ -13,15 +13,19 @@ public final class ViewModelFactory {
 
     public static TranslationViewModel provideTranslationViewModel() {
         if (translationViewModel == null) {
-            translationViewModel = new TranslationViewModel(InteractorFactory.provideTranslateInteractor(),
-                                                            InteractorFactory.provideAddTranslationToFavoritesInteractor());
+            translationViewModel = new TranslationViewModel(
+                    InteractorFactory.provideTranslateInteractor(),
+                    InteractorFactory.provideAddTranslationToFavoritesInteractor(),
+                    InteractorFactory.provideGetSupportedLanguagesInteractor());
         }
         return translationViewModel;
     }
 
     public static FavoritesViewModel provideFavoritesViewModel() {
         if (favoritesViewModel == null) {
-            favoritesViewModel = new FavoritesViewModel(InteractorFactory.provideGetFavoriteTranslationsInteractor());
+            favoritesViewModel = new FavoritesViewModel(
+                    InteractorFactory.provideGetFavoriteTranslationsInteractor(),
+                    InteractorFactory.provideRemoveFavoriteTranslationInteractor());
         }
         return favoritesViewModel;
     }

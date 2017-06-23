@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.kupivipkravtsov.R;
@@ -15,15 +16,37 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public final class FavoriteTranslationsAdapter extends RecyclerView.Adapter<FavoriteTranslationsAdapter.ViewHolder> {
+final class FavoriteTranslationsAdapter extends RecyclerView.Adapter<FavoriteTranslationsAdapter.ViewHolder> {
 
-    private final List<FavoriteTranslation> favoriteTranslations = new ArrayList<>();
+    interface Listener {
+
+        void onRemoveFavoriteTranslation(FavoriteTranslation translation);
+    }
 
     ////
 
-    public void updateFavoriteTranslations(List<FavoriteTranslation> favoriteTranslations) {
+    private final List<FavoriteTranslation> favoriteTranslations = new ArrayList<>();
+
+    private Listener listener;
+
+    ////
+
+    void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    void removeListener() {
+        this.listener = null;
+    }
+
+    void updateFavoriteTranslations(List<FavoriteTranslation> favoriteTranslations) {
         this.favoriteTranslations.clear();
         this.favoriteTranslations.addAll(favoriteTranslations);
+        notifyDataSetChanged();
+    }
+
+    void removeFavoriteTranslation(FavoriteTranslation favoriteTranslation) {
+        favoriteTranslations.remove(favoriteTranslation);
         notifyDataSetChanged();
     }
 
@@ -40,6 +63,8 @@ public final class FavoriteTranslationsAdapter extends RecyclerView.Adapter<Favo
         FavoriteTranslation translation = favoriteTranslations.get(position);
         holder.textToTranslateTextView.setText(translation.getTextToTranslate());
         holder.textTranslatedTextView.setText(translation.getTextTranslated());
+        holder.removeTranslationImageButton.setOnClickListener(
+                view -> listener.onRemoveFavoriteTranslation(translation));
     }
 
     @Override
@@ -55,6 +80,8 @@ public final class FavoriteTranslationsAdapter extends RecyclerView.Adapter<Favo
         TextView textToTranslateTextView;
         @BindView(R.id.text_translated_text_view)
         TextView textTranslatedTextView;
+        @BindView(R.id.remove_translation_image_button)
+        ImageButton removeTranslationImageButton;
 
         ViewHolder(View view) {
             super(view);

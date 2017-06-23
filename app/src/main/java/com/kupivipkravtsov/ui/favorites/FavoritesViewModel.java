@@ -1,7 +1,10 @@
 package com.kupivipkravtsov.ui.favorites;
 
+import android.util.Log;
+
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
 import com.kupivipkravtsov.domain.interactor.GetFavoritesTranslationsInteractor;
+import com.kupivipkravtsov.domain.interactor.RemoveFavoriteTranslationInteractor;
 
 import java.util.List;
 
@@ -10,25 +13,34 @@ import io.reactivex.subjects.BehaviorSubject;
 
 public final class FavoritesViewModel {
 
+    private static final String TAG = FavoritesViewModel.class.getSimpleName();
+
     private final BehaviorSubject<List<FavoriteTranslation>> favoriteTranslations = BehaviorSubject.create();
 
     private final GetFavoritesTranslationsInteractor getFavoritesTranslationsInteractor;
+    private final RemoveFavoriteTranslationInteractor removeFavoriteTranslationInteractor;
 
     ////
 
-    public FavoritesViewModel(GetFavoritesTranslationsInteractor getFavoritesTranslationsInteractor) {
+    public FavoritesViewModel(GetFavoritesTranslationsInteractor getFavoritesTranslationsInteractor,
+                              RemoveFavoriteTranslationInteractor removeFavoriteTranslationInteractor) {
         this.getFavoritesTranslationsInteractor = getFavoritesTranslationsInteractor;
+        this.removeFavoriteTranslationInteractor = removeFavoriteTranslationInteractor;
     }
 
     ////
 
-    public BehaviorSubject<List<FavoriteTranslation>> getFavoriteTranslations() {
+    BehaviorSubject<List<FavoriteTranslation>> getFavoriteTranslations() {
         return favoriteTranslations;
     }
 
-    public void onViewVisibleToUser() {
+    void onViewVisibleToUser() {
         getFavoritesTranslationsInteractor.execute().toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(favoriteTranslations::onNext);
+    }
+
+    void onRemoveFavoriteTranslation(FavoriteTranslation favoriteTranslation) {
+        removeFavoriteTranslationInteractor.execute(favoriteTranslation);
     }
 }

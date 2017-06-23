@@ -1,6 +1,6 @@
-package com.kupivipkravtsov.data;
+package com.kupivipkravtsov.persistense;
 
-import android.util.Log;
+import com.kupivipkravtsov.data.NetworkTranslationCache;
 
 import java.util.HashMap;
 import java.util.Map;

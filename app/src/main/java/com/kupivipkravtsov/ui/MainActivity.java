@@ -47,18 +47,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        View v = getCurrentFocus();
+        View view = getCurrentFocus();
 
-        if (v != null &&
+        if (view != null &&
                 (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_MOVE) &&
-                v instanceof EditText &&
-                !v.getClass().getName().startsWith("android.webkit.")) {
+                    view instanceof EditText && !view.getClass().getName().startsWith("android.webkit.")) {
             int coordinates[] = new int[2];
-            v.getLocationOnScreen(coordinates);
-            float x = ev.getRawX() + v.getLeft() - coordinates[0];
-            float y = ev.getRawY() + v.getTop() - coordinates[1];
+            view.getLocationOnScreen(coordinates);
+            float x = ev.getRawX() + view.getLeft() - coordinates[0];
+            float y = ev.getRawY() + view.getTop() - coordinates[1];
 
-            if (x < v.getLeft() || x > v.getRight() || y < v.getTop() || y > v.getBottom()) hideKeyboard();
+            if (x < view.getLeft() || x > view.getRight() ||
+                    y < view.getTop() || y > view.getBottom()) hideKeyboard();
         }
         return super.dispatchTouchEvent(ev);
     }

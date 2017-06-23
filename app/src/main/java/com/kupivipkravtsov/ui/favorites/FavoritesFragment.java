@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +20,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 
-public final class FavoritesFragment extends Fragment {
+public final class FavoritesFragment extends Fragment implements FavoriteTranslationsAdapter.Listener {
 
     @BindView(R.id.favorite_translations_recycler_view)
     RecyclerView favoritesTranslationRecyclerView;
 
     ////
+
+    private static final String TAG = FavoritesFragment.class.getSimpleName();
 
     private FavoritesViewModel viewModel;
     private CompositeDisposable viewModelSubscription;
@@ -33,7 +36,7 @@ public final class FavoritesFragment extends Fragment {
     ////
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelFactory.provideFavoritesViewModel();
     }
@@ -62,6 +65,15 @@ public final class FavoritesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         unbindViewModel();
+        adapter.removeListener();
+    }
+
+    //// FAVORITE TRANSLATIONS ADAPTER LISTENER
+
+    @Override
+    public void onRemoveFavoriteTranslation(FavoriteTranslation translation) {
+        adapter.removeFavoriteTranslation(translation);
+        viewModel.onRemoveFavoriteTranslation(translation);
     }
 
     //// VIEW MODEL
@@ -79,6 +91,7 @@ public final class FavoritesFragment extends Fragment {
 
     private void setupFavoriteTranslationsRecyclerView() {
         adapter = new FavoriteTranslationsAdapter();
+        adapter.setListener(this);
         favoritesTranslationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         favoritesTranslationRecyclerView.setHasFixedSize(true);
         favoritesTranslationRecyclerView.setAdapter(adapter);
