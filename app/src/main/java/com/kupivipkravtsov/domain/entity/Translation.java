@@ -22,4 +22,13 @@ public final class Translation {
     public String getTextToTranslate() {
         return textToTranslate;
     }
+
+    ////
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Translation &&
+                languageCode.equals(((Translation) obj).getLanguageCode()) &&
+                textToTranslate.equals(((Translation) obj).getTextToTranslate());
+    }
 }

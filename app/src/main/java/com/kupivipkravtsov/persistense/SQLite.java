@@ -6,26 +6,24 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.kupivipkravtsov.data.FavoriteTranslationsStorage;
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
+import com.kupivipkravtsov.domain.entity.Translation;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
 
 public class SQLite extends SQLiteOpenHelper implements FavoriteTranslationsStorage {
 
-    private static final String TAG = SQLite.class.getSimpleName();
     private static final String DATABASE_NAME = "translation_database";
     private static final int DATABASE_VERSION = 1;
 
     private static final String FAVORITE_TRANSLATIONS_TABLE_NAME = "favorite_translations";
     private static final String ID_COLUMN = "id";
-    private static final String LANGUAGE_CODE_COLUMN = "landuage_code";
+    private static final String LANGUAGE_CODE_COLUMN = "language_code";
     private static final String TEXT_TO_TRANSLATE_COLUMN = "text_to_translate";
     private static final String TEXT_TRANSLATED_COLUMN = "text_translated";
-    private String[] allColumns = { ID_COLUMN, TEXT_TO_TRANSLATE_COLUMN, TEXT_TRANSLATED_COLUMN };
+    private String[] allColumns = { ID_COLUMN, LANGUAGE_CODE_COLUMN, TEXT_TO_TRANSLATE_COLUMN, TEXT_TRANSLATED_COLUMN };
 
     private static SQLite instance;
 
@@ -69,12 +67,13 @@ public class SQLite extends SQLiteOpenHelper implements FavoriteTranslationsStor
     }
 
     @Override
-    public Observable<String> get(String languageCode, String textToTranslate) {
+    public Observable<String> get(Translation translation) {
         return Observable.create(emitter -> {
             Cursor cursor = database.query(
                     FAVORITE_TRANSLATIONS_TABLE_NAME,
                     allColumns,
-                    LANGUAGE_CODE_COLUMN + " = " + languageCode + " AND " + TEXT_TO_TRANSLATE_COLUMN + " = " + textToTranslate,
+                    LANGUAGE_CODE_COLUMN + " = " + translation.getLanguageCode() + " AND " +
+                            TEXT_TO_TRANSLATE_COLUMN + " = " + translation.getTextToTranslate(),
                     null, null, null, null);
 
             cursor.moveToFirst();
@@ -103,8 +102,9 @@ public class SQLite extends SQLiteOpenHelper implements FavoriteTranslationsStor
     }
 
     @Override
-    public void remove(String languageCode, FavoriteTranslation favoriteTranslation) {
+    public void remove(FavoriteTranslation favoriteTranslation) {
         database.delete(FAVORITE_TRANSLATIONS_TABLE_NAME,
+                LANGUAGE_CODE_COLUMN + " = '" + favoriteTranslation.getLanguageCode() + "' AND " +
                 TEXT_TO_TRANSLATE_COLUMN + " = '" + favoriteTranslation.getTextToTranslate() + "'", null);
     }
 }

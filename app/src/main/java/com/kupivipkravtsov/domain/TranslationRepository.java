@@ -1,6 +1,7 @@
 package com.kupivipkravtsov.domain;
 
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
+import com.kupivipkravtsov.domain.entity.Language;
 import com.kupivipkravtsov.domain.entity.Translation;
 
 import java.util.List;
@@ -18,5 +19,5 @@ public interface TranslationRepository {
 
     void removeFavoriteTranslation(FavoriteTranslation favoriteTranslation);
 
-    Observable<List<String>> querySupportedLanguages();
+    Observable<List<Language>> querySupportedLanguages();
 }

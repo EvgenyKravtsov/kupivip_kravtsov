@@ -2,6 +2,7 @@ package com.kupivipkravtsov.domain.interactor;
 
 
 import com.kupivipkravtsov.domain.TranslationRepository;
+import com.kupivipkravtsov.domain.entity.Language;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class GetSupportedLanguagesInteractor {
 
     ////
 
-    public Observable<List<String>> execute() {
+    public Observable<List<Language>> execute() {
         return translationRepository.querySupportedLanguages();
     }
 }

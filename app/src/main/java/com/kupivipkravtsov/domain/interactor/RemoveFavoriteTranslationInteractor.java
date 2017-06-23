@@ -1,10 +1,7 @@
 package com.kupivipkravtsov.domain.interactor;
 
-
 import com.kupivipkravtsov.domain.TranslationRepository;
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
-
-import io.reactivex.Single;
 
 public final class RemoveFavoriteTranslationInteractor {
 
@@ -12,7 +9,7 @@ public final class RemoveFavoriteTranslationInteractor {
 
     ////
 
-    public RemoveFavoriteTranslationInteractor(TranslationRepository translationRepository) {
+    RemoveFavoriteTranslationInteractor(TranslationRepository translationRepository) {
         this.translationRepository = translationRepository;
     }
 

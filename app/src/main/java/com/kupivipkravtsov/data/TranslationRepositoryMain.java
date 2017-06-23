@@ -2,6 +2,7 @@ package com.kupivipkravtsov.data;
 
 import com.kupivipkravtsov.domain.TranslationRepository;
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
+import com.kupivipkravtsov.domain.entity.Language;
 import com.kupivipkravtsov.domain.entity.Translation;
 
 import java.util.List;
@@ -11,8 +12,6 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 
 public final class TranslationRepositoryMain implements TranslationRepository {
-
-    private static final String TAG = TranslationRepositoryMain.class.getSimpleName();
 
     private final NetworkTranslationService networkTranslationService;
     private final NetworkTranslationCache networkTranslationCache;
@@ -60,7 +59,7 @@ public final class TranslationRepositoryMain implements TranslationRepository {
     }
 
     @Override
-    public Observable<List<String>> querySupportedLanguages() {
+    public Observable<List<Language>> querySupportedLanguages() {
         return networkTranslationService.requestSupportedLanguages().subscribeOn(Schedulers.io());
     }
 }

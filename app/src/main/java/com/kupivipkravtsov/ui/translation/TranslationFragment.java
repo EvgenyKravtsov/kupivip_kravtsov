@@ -47,8 +47,6 @@ public final class TranslationFragment extends Fragment {
 
     ////
 
-    private static final String TAG = TranslationFragment.class.getSimpleName();
-
     private TranslationViewModel viewModel;
     private CompositeDisposable viewModelSubscription;
 
@@ -122,9 +120,19 @@ public final class TranslationFragment extends Fragment {
     private void displaySupportedLanguages(List<Language> supportedLanguages) {
         List<String> languageDescriptions = new ArrayList<>();
         for (Language language : supportedLanguages) languageDescriptions.add(language.getDescription());
+
+        int selectedLanguageIndex = 0;
+        for (int i = 0; i < supportedLanguages.size(); i++) {
+            if (supportedLanguages.get(i).getCode().equals(viewModel.getLanguageCode())) {
+                selectedLanguageIndex = i;
+                break;
+            }
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_supported_language, languageDescriptions);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         supportedLanguagesSpinner.setAdapter(adapter);
+        supportedLanguagesSpinner.setSelection(selectedLanguageIndex);
 
         supportedLanguagesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

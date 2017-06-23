@@ -1,7 +1,5 @@
 package com.kupivipkravtsov.ui.favorites;
 
-import android.util.Log;
-
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
 import com.kupivipkravtsov.domain.interactor.GetFavoritesTranslationsInteractor;
 import com.kupivipkravtsov.domain.interactor.RemoveFavoriteTranslationInteractor;
@@ -12,8 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.BehaviorSubject;
 
 public final class FavoritesViewModel {
-
-    private static final String TAG = FavoritesViewModel.class.getSimpleName();
 
     private final BehaviorSubject<List<FavoriteTranslation>> favoriteTranslations = BehaviorSubject.create();
 

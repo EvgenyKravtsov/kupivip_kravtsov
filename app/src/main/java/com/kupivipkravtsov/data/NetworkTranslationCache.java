@@ -1,10 +1,12 @@
 package com.kupivipkravtsov.data;
 
+import com.kupivipkravtsov.domain.entity.Translation;
+
 import io.reactivex.Observable;
 
 public interface NetworkTranslationCache {
 
-    Observable<String> get(String textToTranslate);
+    Observable<String> get(Translation translation);
 
-    void add(String textToTranslate, String textTranslated);
+    void add(Translation translation, String textTranslated);
 }

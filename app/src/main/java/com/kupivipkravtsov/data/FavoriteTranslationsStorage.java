@@ -1,17 +1,17 @@
 package com.kupivipkravtsov.data;
 
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
+import com.kupivipkravtsov.domain.entity.Translation;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 public interface FavoriteTranslationsStorage {
 
     void add(FavoriteTranslation favoriteTranslation);
 
-    Observable<String> get(String languageCode, String textToTranslate);
+    Observable<String> get(Translation translation);
 
     Observable<FavoriteTranslation> getAll();
 
-    void remove(String languageCode, FavoriteTranslation favoriteTranslation);
+    void remove(FavoriteTranslation favoriteTranslation);
 }

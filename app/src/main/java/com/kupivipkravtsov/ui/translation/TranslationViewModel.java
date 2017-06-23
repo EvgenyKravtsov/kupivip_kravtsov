@@ -1,6 +1,7 @@
 package com.kupivipkravtsov.ui.translation;
 
 import com.kupivipkravtsov.domain.entity.FavoriteTranslation;
+import com.kupivipkravtsov.domain.entity.Language;
 import com.kupivipkravtsov.domain.entity.Translation;
 import com.kupivipkravtsov.domain.interactor.AddTranslationToFavoritesInteractor;
 import com.kupivipkravtsov.domain.interactor.GetSupportedLanguagesInteractor;
@@ -13,11 +14,9 @@ import io.reactivex.subjects.BehaviorSubject;
 
 public final class TranslationViewModel {
 
-    private static final String TAG = TranslationViewModel.class.getSimpleName();
-
     private final BehaviorSubject<String> textToTranslate = BehaviorSubject.create();
     private final BehaviorSubject<String> textTranslated = BehaviorSubject.create();
-    private final BehaviorSubject<List<String>> supportedLanguages = BehaviorSubject.create();
+    private final BehaviorSubject<List<Language>> supportedLanguages = BehaviorSubject.create();
 
     private final TranslateInteractor translateInteractor;
     private final AddTranslationToFavoritesInteractor addTranslationToFavoritesInteractor;
@@ -36,7 +35,7 @@ public final class TranslationViewModel {
 
     ////
 
-    public BehaviorSubject<String> getTextToTranslate() {
+    BehaviorSubject<String> getTextToTranslate() {
         return textToTranslate;
     }
 
@@ -44,13 +43,17 @@ public final class TranslationViewModel {
         return textTranslated;
     }
 
-    BehaviorSubject<List<String>> getSupportedLanguages() {
+    BehaviorSubject<List<Language>> getSupportedLanguages() {
         return supportedLanguages;
     }
 
     void onLanguageSelected(String code) {
         languageCode = code;
         if (textToTranslate.getValue() != null) translate(textToTranslate.getValue());
+    }
+
+    String getLanguageCode() {
+        return languageCode;
     }
 
     ////
